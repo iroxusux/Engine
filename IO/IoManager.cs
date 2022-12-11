@@ -54,5 +54,51 @@ namespace Engine.IO
             }
             return new();
         }
+        public static void CopyDirectory(string sourceDir, string destinationDir, bool copySubDirs = true)
+        {
+            DirectoryInfo dir = new DirectoryInfo(sourceDir);
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            // If the source directory does not exist, throw an exception.
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDir);
+            }
+
+            // If the destination directory does not exist, create it.
+            if (!Directory.Exists(destinationDir))
+            {
+                Directory.CreateDirectory(destinationDir);
+            }
+
+
+            // Get the file contents of the directory to copy.
+            FileInfo[] files = dir.GetFiles();
+
+            foreach (FileInfo file in files)
+            {
+                // Create the path to the new copy of the file.
+                string temppath = Path.Combine(destinationDir, file.Name);
+
+                // Copy the file.
+                file.CopyTo(temppath, false);
+            }
+
+            // If copySubDirs is true, copy the subdirectories.
+            if (copySubDirs)
+            {
+
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    // Create the subdirectory.
+                    string temppath = Path.Combine(destinationDir, subdir.Name);
+
+                    // Copy the subdirectories.
+                    CopyDirectory(subdir.FullName, temppath, copySubDirs);
+                }
+            }
+        }
     }
 }
