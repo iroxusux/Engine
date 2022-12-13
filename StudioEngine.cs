@@ -1,15 +1,15 @@
 ﻿namespace Engine
 {
     /// <summary>
-    /// Managing Static Class For Indicon Studio Development
-    /// All Sub Functions Of Indicon Studio Should Rely On This Static Main Class To Manage Resources Appropriately
+    /// Managing Static Class For Studio Development
+    /// All Sub Functions Of Studio Should Rely On This Static Main Class To Manage Resources Appropriately
     /// </summary>
     public static class StudioEngine
     {
         /// <summary>
-        /// Main String Identifying Indicon's Studio Environment
+        /// Main String Identifying Studio Environment
         /// </summary>
-        private const string APP_NAME = "Indicon Studio";
+        private const string APP_NAME = "irox_Studio";
         /// <summary>
         /// Application Directory Path
         /// </summary>
@@ -78,6 +78,16 @@
                     Notify.NotifyHandler.Fatal(Notify.CodeFatal.AppDirError);
                 }
             }
+        }
+        public static void BindToolToForm<T>(ref Tool.Tool<T> tool, ref T form) where T : class
+        {
+            tool.BindToForm(ref form);
+            tool.Init();
+        }
+        public static void BindToolToForm<T, F>(ref T tool, ref F form) where T : Tool.Tool<F> where F : class
+        {
+            tool.BindToForm(ref form);
+            tool.Init();
         }
     }
 }

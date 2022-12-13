@@ -1,9 +1,11 @@
-﻿namespace Engine.Tool
+﻿using Engine.Notify;
+
+namespace Engine.Tool
 {
     /// <summary>
     /// Abstract Class For Subsidiary Tools To Indicon Studio
     /// </summary>
-    public abstract class Tool
+    public abstract class Tool<T> where T: class
     {
         /// <summary>
         /// Name Of Tool - Will Be Used For Directories, Windows, File Naming Schemes, etc.
@@ -17,6 +19,10 @@
         /// Internally Managed Boolean Of Tool Initialized
         /// </summary>
         public bool Initialized { get; private set; } = false;
+        /// <summary>
+        /// Form Generic For Binding Tool To Passed Windows Form
+        /// </summary>
+        protected T? Form { get; set; } = null;
         /// <summary>
         /// Default Implimentation Of Init Function - Override As Required
         /// </summary>
@@ -48,5 +54,10 @@
         /// </summary>
         /// <returns></returns>
         protected virtual bool GetWindowsStartUp() { return NativeWinFuncs.NativeWinFuncs.StartupStatus(ToolName); }
+        public virtual void BindToForm(ref T form)
+        {
+            if (form == null) NotifyHandler.Fatal(CodeFatal.NullFormError);
+            Form = form;
+        }
     }
 }

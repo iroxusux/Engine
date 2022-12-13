@@ -21,5 +21,9 @@
             }
             return string.Empty;
         }
+        public struct PlcFileTypes
+        {
+            public const string L5X = ".L5X";
+        }
     }
 }
